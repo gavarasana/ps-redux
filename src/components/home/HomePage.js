@@ -1,14 +1,14 @@
-import { React } from "react";
+import  React  from "react";
 import { Link } from "react-router-dom";
 
-const HomePage = () => {
+const HomePage = () => (  
   <div className="jumbotron">
     <h1>Pluralsight Administration</h1>
     <p>React, Redux and React router for ultra-responsive web apps</p>
-    <Link className="btn btn-primary btn-lg" to="about">
+    <Link to="about" className="btn btn-primary btn-lg">
       Learn more
     </Link>
-  </div>;
-};
+  </div>
+);
 
 export default HomePage;
