@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as coursesActions from "../../redux/actions/courseActions";
+import PropTypes from "prop-types";
 
 class CoursesPage extends React.Component {
   //   constructor(props) {
@@ -23,13 +26,14 @@ class CoursesPage extends React.Component {
   };
 
   handleSubmit = (event) => {
-    event.preventDefault;
-    alert(this.state.course.title);
+    event.preventDefault();
+    this.props.dispatch(coursesActions.createCourse(this.state.course));
+    //alert(this.state.course.title);
   };
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <h2>Courses</h2>
         <h3>Add course</h3>
         <input
@@ -37,10 +41,29 @@ class CoursesPage extends React.Component {
           onChange={this.handleChange}
           value={this.state.course.title}
         />
-        <input type="submit" value="Save" onClick={this.handleSubmit} />
+        <input type="submit" value="Save" />
+        {this.props.courses.map((course) => (
+          <div key={course.title}>{course.title}</div>
+        ))}
       </form>
     );
   }
 }
 
-export default CoursesPage;
+CoursesPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  courses: PropTypes.array.isRequired,
+};
+
+//function mapStateToProps(state, ownProps){
+function mapStateToProps(state) {
+  return {
+    courses: state.courses,
+  };
+}
+
+//const connectedStateAndProps = connect(mapStateToProps, mapDispatchToProps);
+const connectedStateAndProps = connect(mapStateToProps);
+
+export default connectedStateAndProps(CoursesPage);
+//export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage); // you could do this.
