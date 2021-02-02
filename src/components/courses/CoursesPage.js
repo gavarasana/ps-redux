@@ -8,12 +8,17 @@ import CourseList from "./CourseList";
 
 class CoursesPage extends React.Component {
   componentDidMount() {
-    this.props.actions.loadAuthors().catch((error) => {
-      alert("Loading authors failed" + error);
-    });
-    this.props.actions.loadCourses().catch((error) => {
-      alert("Loading courses failed" + error);
-    });
+    const { authors, courses, actions } = this.props;
+    if (authors.length === 0) {
+      actions.loadAuthors().catch((error) => {
+        alert("Loading authors failed" + error);
+      });
+    }
+    if (courses.length === 0) {
+      actions.loadCourses().catch((error) => {
+        alert("Loading courses failed" + error);
+      });
+    }
   }
 
   render() {
@@ -31,7 +36,7 @@ CoursesPage.propTypes = {
   //createCourse: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
-  // authors: PropTypes.array.isRequired,
+  authors: PropTypes.array.isRequired,
 };
 
 //function mapStateToProps(state, ownProps){
