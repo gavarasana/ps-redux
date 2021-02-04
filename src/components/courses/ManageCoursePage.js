@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
 import * as authorActions from "../../redux/actions/authorActions";
-import PropTypes from "prop-types";
+import PropTypes, { func } from "prop-types";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../Tools/mockData";
 
-function ManageCoursePage({ authors, courses, loadCourses, loadAuthors }) {
-  const [course, setCourse] = useState();
+function ManageCoursePage({
+  authors,
+  courses,
+  loadCourses,
+  loadAuthors,
+  ...props
+}) {
+  const [course, setCourse] = useState({ ...props.course });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (authors.length === 0) {
@@ -22,10 +29,21 @@ function ManageCoursePage({ authors, courses, loadCourses, loadAuthors }) {
     }
   }, []);
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      [name]: name === "authorId" ? parseInt(value, 10) : value,
+    }));
+  }
+
   return (
-    <>
-      <h2>Manage Course</h2>
-    </>
+    <CourseForm
+      course={course}
+      authors={authors}
+      errors={errors}
+      onChange={handleChange}
+    />
   );
 }
 
