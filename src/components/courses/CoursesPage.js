@@ -61,6 +61,7 @@ function mapStateToProps(state) {
 //     },
 //   };
 // }
+
 // Pass mapDispathcToProps as an object
 
 const mapDispatchToProps = {

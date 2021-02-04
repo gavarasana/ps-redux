@@ -34,14 +34,14 @@ export function loadCourses() {
 }
 
 export function saveCourse(course) {
-  return async function (dispatch, getState) {
+  return async function (dispatch) {
     debugger;
     try {
       const savedCourse = await courseApi.saveCourse(course);
       if (course.id) {
-        dispatch(createCourseSuccess(savedCourse));
-      } else {
         dispatch(updateCourseSuccess(savedCourse));
+      } else {
+        dispatch(createCourseSuccess(savedCourse));
       }
     } catch (error) {
       throw error;

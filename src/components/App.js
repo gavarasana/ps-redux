@@ -13,6 +13,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path="/courses/add-new" component={ManageCoursePage} />
         <Route path="/courses/:slug" component={ManageCoursePage} />
         <Route path="/courses" component={CoursesPage} />
         <Route path="/about" component={AboutPage} />
