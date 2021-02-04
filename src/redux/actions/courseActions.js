@@ -1,17 +1,24 @@
 import actionTypes from "./actionTypes";
 import * as courseApi from "../../api/courseApi";
 
-export function createCourse(course) {
-  return {
-    type: actionTypes.CREATE_COURSE,
-    course: course,
-  };
-}
-
 export function loadCoursesSuccess(courses) {
   return {
     type: actionTypes.LOAD_COURSES_SUCCESS,
     courses,
+  };
+}
+
+export function createCourseSuccess(course) {
+  return {
+    type: actionTypes.CREATE_COURSE_SUCCESS,
+    course,
+  };
+}
+
+export function updateCourseSuccess(course) {
+  return {
+    type: actionTypes.UPDATE_COURSE_SUCCESS,
+    course,
   };
 }
 
@@ -20,6 +27,22 @@ export function loadCourses() {
     try {
       const courses = await courseApi.getCourses();
       dispatch(loadCoursesSuccess(courses));
+    } catch (error) {
+      throw error;
+    }
+  };
+}
+
+export function saveCourse(course) {
+  return async function (dispatch, getState) {
+    debugger;
+    try {
+      const savedCourse = await courseApi.saveCourse(course);
+      if (course.id) {
+        dispatch(createCourseSuccess(savedCourse));
+      } else {
+        dispatch(updateCourseSuccess(savedCourse));
+      }
     } catch (error) {
       throw error;
     }
