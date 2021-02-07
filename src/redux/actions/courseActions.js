@@ -1,5 +1,6 @@
 import actionTypes from "./actionTypes";
 import * as courseApi from "../../api/courseApi";
+import { beginApiCall } from "./apiStatusActions";
 
 export function loadCoursesSuccess(courses) {
   return {
@@ -25,6 +26,7 @@ export function updateCourseSuccess(course) {
 export function loadCourses() {
   return async function (dispatch) {
     try {
+      dispatch(beginApiCall());
       const courses = await courseApi.getCourses();
       dispatch(loadCoursesSuccess(courses));
     } catch (error) {
@@ -35,7 +37,7 @@ export function loadCourses() {
 
 export function saveCourse(course) {
   return async function (dispatch) {
-    debugger;
+    dispatch();
     try {
       const savedCourse = await courseApi.saveCourse(course);
       if (course.id) {
