@@ -37,7 +37,7 @@ export function loadCourses() {
 
 export function saveCourse(course) {
   return async function (dispatch) {
-    dispatch();
+    dispatch(beginApiCall());
     try {
       const savedCourse = await courseApi.saveCourse(course);
       if (course.id) {

@@ -18,6 +18,7 @@ function ManageCoursePage({
 }) {
   const [course, setCourse] = useState({ ...props.course });
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     debugger;
@@ -45,6 +46,7 @@ function ManageCoursePage({
 
   function handleSave(event) {
     event.preventDefault();
+    setSaving(true);
     saveCourse(course).then(() => {
       history.push("/courses");
     });
@@ -59,6 +61,7 @@ function ManageCoursePage({
       errors={errors}
       onChange={handleChange}
       onSave={handleSave}
+      saving={saving}
     />
   );
 }
@@ -96,6 +99,7 @@ ManageCoursePage.propTypes = {
   loadAuthors: PropTypes.func.isRequired,
   saveCourse: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  saving: PropTypes.bool.isRequired,
 };
 
 export default connectedStateAndProps(ManageCoursePage);
