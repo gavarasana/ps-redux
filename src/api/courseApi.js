@@ -14,3 +14,11 @@ export function saveCourse(course) {
     .then(handleResponse)
     .catch(handleError);
 }
+
+export function deleteCourse(course) {
+  return fetch(baseUrl + course.id, {
+    method: "DELETE",
+  })
+    .then(handleResponse)
+    .catch(handleError);
+}

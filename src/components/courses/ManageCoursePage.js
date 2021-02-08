@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../Tools/mockData";
 import Spinner from "../common/Spinner";
+import { toast, Toast } from "react-toastify";
 
 function ManageCoursePage({
   authors,
@@ -21,7 +22,6 @@ function ManageCoursePage({
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    debugger;
     if (authors.length === 0) {
       loadAuthors().catch((error) => {
         alert("Loading authors failed" + error);
@@ -44,12 +44,33 @@ function ManageCoursePage({
     }));
   }
 
+  function isFormValid() {
+    const { title, authorId, category } = course;
+    const error = {};
+
+    if (!title) error.title = "Course title is required";
+    if (!category) error.category = "Course category is required";
+    if (!authorId) error.author = "Course author is required";
+
+    setErrors(error);
+
+    return Object.keys(error).length === 0;
+  }
+
   function handleSave(event) {
     event.preventDefault();
+    if (!isFormValid()) return;
     setSaving(true);
-    saveCourse(course).then(() => {
-      history.push("/courses");
-    });
+
+    saveCourse(course)
+      .then(() => {
+        toast.success("Course saved successfully");
+        history.push("/courses");
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors({ onSave: error.message });
+      });
   }
 
   return authors.length === 0 || courses.length === 0 ? (
@@ -99,7 +120,7 @@ ManageCoursePage.propTypes = {
   loadAuthors: PropTypes.func.isRequired,
   saveCourse: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  saving: PropTypes.bool.isRequired,
+  saving: PropTypes.bool,
 };
 
 export default connectedStateAndProps(ManageCoursePage);
